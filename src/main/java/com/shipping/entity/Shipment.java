@@ -28,6 +28,14 @@ public class Shipment {
     @Column(nullable = false)
     private String shippingAddress;
 
+    @Enumerated(EnumType.STRING)
+    private AddressType addressType; // HOME or OFFICE
+
+    private String officeCompanyName;
+    private String officeFloor;
+    private String officeBuildingName;
+    private String officeLandmark;
+
     private String city;
     private String state;
     private String zipCode;
@@ -65,4 +73,3 @@ public class Shipment {
         updatedAt = LocalDateTime.now();
     }
 }
-

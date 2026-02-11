@@ -18,6 +18,14 @@ public class ShipOrderRequest {
     @NotBlank(message = "Shipping address is required")
     private String shippingAddress;
 
+    private String addressType; // "HOME" or "OFFICE"
+
+    // Office-specific fields
+    private String officeCompanyName;
+    private String officeFloor;
+    private String officeBuildingName;
+    private String officeLandmark;
+
     private String city;
     private String state;
     private String zipCode;
@@ -31,4 +39,3 @@ public class ShipOrderRequest {
 
     private String carrier;
 }
-

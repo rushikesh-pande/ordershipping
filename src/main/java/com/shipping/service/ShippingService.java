@@ -2,6 +2,7 @@ package com.shipping.service;
 
 import com.shipping.dto.ShipOrderRequest;
 import com.shipping.dto.ShipmentResponse;
+import com.shipping.entity.AddressType;
 import com.shipping.entity.Shipment;
 import com.shipping.entity.ShipmentStatus;
 import com.shipping.repository.ShipmentRepository;
@@ -21,15 +22,28 @@ public class ShippingService {
 
     @Transactional
     public ShipmentResponse shipOrder(ShipOrderRequest request) {
-        log.info("Shipping order: {}", request.getOrderId());
+        log.info("Shipping order: {} to {} address", request.getOrderId(), 
+                request.getAddressType() != null ? request.getAddressType() : "HOME");
 
         String shipmentId = generateShipmentId();
         String trackingNumber = generateTrackingNumber();
+
+        // Determine address type
+        AddressType addressType = AddressType.HOME;
+        if (request.getAddressType() != null && request.getAddressType().equalsIgnoreCase("OFFICE")) {
+            addressType = AddressType.OFFICE;
+            log.info("Office delivery requested for company: {}", request.getOfficeCompanyName());
+        }
 
         Shipment shipment = Shipment.builder()
                 .shipmentId(shipmentId)
                 .orderId(request.getOrderId())
                 .shippingAddress(request.getShippingAddress())
+                .addressType(addressType)
+                .officeCompanyName(request.getOfficeCompanyName())
+                .officeFloor(request.getOfficeFloor())
+                .officeBuildingName(request.getOfficeBuildingName())
+                .officeLandmark(request.getOfficeLandmark())
                 .city(request.getCity())
                 .state(request.getState())
                 .zipCode(request.getZipCode())
@@ -39,7 +53,7 @@ public class ShippingService {
                 .status(ShipmentStatus.PROCESSING)
                 .trackingNumber(trackingNumber)
                 .carrier(request.getCarrier() != null ? request.getCarrier() : "Standard Carrier")
-                .estimatedDelivery(LocalDateTime.now().plusDays(5))
+                .estimatedDelivery(calculateEstimatedDelivery(addressType))
                 .build();
 
         shipment.setStatus(ShipmentStatus.SHIPPED);
@@ -91,5 +105,10 @@ public class ShippingService {
                 .message(message)
                 .build();
     }
-}
 
+    private LocalDateTime calculateEstimatedDelivery(AddressType addressType) {
+        // Office deliveries might take 1 extra day for business hours coordination
+        int days = (addressType == AddressType.OFFICE) ? 6 : 5;
+        return LocalDateTime.now().plusDays(days);
+    }
+}
