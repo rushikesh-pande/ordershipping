@@ -1,7 +1,7 @@
 # ordershipping
 
 ## Overview
-Microservice for: **In shipping address service please add office address option,publish event in kafka topic**
+Microservice for: **ship order:- Please ship order as per customer desired address**
 
 ## Tech Stack
 - Java 17
