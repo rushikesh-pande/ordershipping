@@ -1,33 +1,29 @@
-# Order Shipping Service
+# ordershipping
 
 ## Overview
-Microservice for shipping orders to customer addresses with tracking.
+Microservice for: **ship order:- Please ship order as per customer desired address**
 
-## Features
-- Ship orders to customer desired addresses
-- Generate tracking numbers
-- Track shipment status
-- Carrier integration
-- Estimated delivery dates
-
-## API Endpoints
-
-### Ship Order
-**POST** `/api/v1/shipments`
-
-### Get Shipment Status
-**GET** `/api/v1/shipments/{shipmentId}`
-
-### Track Shipment
-**GET** `/api/v1/shipments/track/{trackingNumber}`
-
-## Technology Stack
+## Tech Stack
 - Java 17
 - Spring Boot 3.2.2
-- PostgreSQL
+- Maven
+- Kafka (topic: `order.shipped`)
+
+## API Endpoints
+| Method | Path | Description |
+|--------|------|-------------|
+| POST   | /api/v1/shipments | Create |
+| GET    | /api/v1/shipments | List all |
+| GET    | /api/v1/shipments/{id} | Get by ID |
+| PUT    | /api/v1/shipments/{id} | Update |
+| DELETE | /api/v1/shipments/{id} | Delete |
 
 ## Running
 ```bash
 mvn spring-boot:run
 ```
+Service runs on port **8084**
 
+## Kafka
+Topic: `order.shipped`
+Events: `SHIPMENT_CREATED`, `SHIPMENT_UPDATED`, `SHIPMENT_DELETED`
