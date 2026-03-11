@@ -1,0 +1,9 @@
+# Issue template chooser configuration — ordershipping
+blank_issues_enabled: false
+contact_links:
+  - name: Question / Discussion
+    url: https://github.com/rushikesh-pande/ordershipping/discussions
+    about: Ask questions and discuss ideas
+  - name: Security Vulnerability
+    url: https://github.com/rushikesh-pande/ordershipping/security/advisories/new
+    about: Report a security vulnerability privately
